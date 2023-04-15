@@ -1,45 +1,104 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.inmar</groupId>
-  <artifactId>log4j2-converter</artifactId>
-  <version>1.0.0</version>
+    <groupId>com.inmar</groupId>
+    <artifactId>log4j2-converter</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+    <name>log4j2-converter</name>
+    <url>https://github.com/palestiner/log4j2-converter.git</url>
 
-  <name>log4j2-converter</name>
+    <scm>
+        <url>https://github.com/palestiner/log4j2-converter.git</url>
+        <connection>scm:git:git@github.com:palestiner/log4j2-converter.git</connection>
+        <developerConnection>scm:git:git@github.com:palestiner/log4j2-converter.git</developerConnection>
+    </scm>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.github.github</groupId>
+                <artifactId>site-maven-plugin</artifactId>
+                <version>0.12</version>
+                <configuration>
+                    <message>Maven artifacts for ${project.version}</message>
+                    <noJekyll>true</noJekyll>
+                    <outputDirectory>${project.build.directory}</outputDirectory>
+                    <branch>refs/heads/master</branch>
+                    <includes>
+                        <include>**/*</include>
+                    </includes>
+                    <merge>true</merge>
+                    <repositoryName>log4j2-converter</repositoryName>
+                    <repositoryOwner>palestiner</repositoryOwner>
+                    <server>github</server>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>site</goal>
+                        </goals>
+                        <phase>deploy</phase>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
-    <log4j.version>2.17.1</log4j.version>
-    <lmax.disruptor.version>3.4.2</lmax.disruptor.version>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <maven.compiler.source>1.8</maven.compiler.source>
+        <log4j.version>2.17.1</log4j.version>
+        <lmax.disruptor.version>3.4.2</lmax.disruptor.version>
 
-    <app.runtime>4.4.0-20220622</app.runtime>
-    <mule.maven.plugin.version>3.6.3</mule.maven.plugin.version>
-  </properties>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-core</artifactId>
-      <version>${log4j.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-api</artifactId>
-      <version>${log4j.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.lmax</groupId>
-      <artifactId>disruptor</artifactId>
-      <version>${lmax.disruptor.version}</version>
-    </dependency>
-  </dependencies>
+        <app.runtime>4.4.0-20220622</app.runtime>
+        <mule.maven.plugin.version>3.6.3</mule.maven.plugin.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.lmax</groupId>
+            <artifactId>disruptor</artifactId>
+            <version>${lmax.disruptor.version}</version>
+        </dependency>
+    </dependencies>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub palestiner Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/palestiner/log4j2-converter</url>
+        </repository>
+    </distributionManagement>
 
 </project>
