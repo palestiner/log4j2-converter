@@ -8,7 +8,7 @@ This application helps to add a simple json masking rewriter for any appender
 
 Usage
 
-1. Exec ```mvn clean install```
+1. Exec `mvn clean install`
 2. Add dependency to project
 
 ```xml
@@ -16,17 +16,17 @@ Usage
 <dependency>
     <groupId>com.inmar</groupId>
     <artifactId>log4j2-converter</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
-3. Add ```com.inmar.api.json``` package to ```Configuration``` node in ```log4j2.xml```
-4. Add ```Rewrite```
-5. Add ```JsonMaskingConverter``` to ```Rewriter```
-6. ```JsonMaskingConverter``` must contain at least one ```JsonPath```
-7. ```JsonPath``` must contain value. Use the dot–notation
+3. Add `com.inmar.api.json` package to `Configuration` node in `log4j2.xml`
+4. Add `Rewrite`
+5. Add `JsonMaskingConverter` to `Rewriter`
+6. `JsonMaskingConverter` must contain at least one `JsonPath`
+7. `JsonPath` must contain value. Use the dot–notation
    for [JsonPath expressions](https://github.com/json-path/JsonPath)
-8. Set this ```Rewrite``` to ```Root``` like appender
+8. Set this `Rewrite` to `Root` like appender
 
 ### Full config example
 
