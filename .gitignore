@@ -48,3 +48,6 @@ target/
 velocity.log
 .idea/
 vcs.xml
+
+src/main/java/Main.java
+src/main/resources
