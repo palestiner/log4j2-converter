@@ -8,6 +8,7 @@ import org.apache.logging.log4j.core.appender.rewrite.RewritePolicy;
 import org.apache.logging.log4j.core.config.plugins.Plugin;
 import org.apache.logging.log4j.core.config.plugins.PluginElement;
 import org.apache.logging.log4j.core.config.plugins.PluginFactory;
+import org.apache.logging.log4j.core.config.plugins.validation.constraints.Required;
 import org.apache.logging.log4j.core.impl.Log4jLogEvent;
 import org.apache.logging.log4j.message.Message;
 
@@ -21,7 +22,11 @@ public class JsonMaskingConverter implements RewritePolicy {
     }
 
     @PluginFactory
-    public static JsonMaskingConverter createPolicy(@PluginElement("JsonPaths") final PluginJsonPath[] jsonPaths) {
+    public static JsonMaskingConverter createPolicy(
+            @PluginElement("JsonPaths")
+            @Required(message = "JsonPath is required for JsonMaskingConverter")
+            final PluginJsonPath[] jsonPaths
+    ) {
         return new JsonMaskingConverter(new JsonMasker(jsonPaths));
     }
 
