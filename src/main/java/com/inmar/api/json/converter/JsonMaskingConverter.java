@@ -4,6 +4,7 @@ import com.inmar.api.json.domain.JsonField;
 import com.inmar.api.json.domain.JsonSupportedType;
 import com.inmar.api.json.domain.JsonSupportedTypePatternMask;
 import com.inmar.api.json.masker.JsonSensitiveFieldsMasker;
+import com.inmar.api.json.masker.Masker;
 import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.appender.rewrite.RewritePolicy;
 import org.apache.logging.log4j.core.config.plugins.Plugin;
@@ -24,15 +25,17 @@ import java.util.stream.Stream;
 public class JsonMaskingConverter implements RewritePolicy {
 
     private static final StatusLogger LOGGER = StatusLogger.getLogger();
-    private final JsonSensitiveFieldsMasker jsonSensitiveFieldsMasker;
+    private final Masker masker;
 
-    public JsonMaskingConverter(JsonSensitiveFieldsMasker jsonSensitiveFieldsMasker) {
-        this.jsonSensitiveFieldsMasker = jsonSensitiveFieldsMasker;
+    public JsonMaskingConverter(Masker masker) {
+        this.masker = masker;
     }
 
     @PluginFactory
     public static JsonMaskingConverter createPolicy(
-            @PluginElement("JsonFields") @Required final JsonField[] jsonFields
+            @PluginElement("JsonFields")
+            @Required(message = "Required at least one JsonField")
+            final JsonField[] jsonFields
     ) {
         List<JsonField> filteredFields = Stream.of(jsonFields)
                 .filter(jsonField -> {
@@ -56,8 +59,7 @@ public class JsonMaskingConverter implements RewritePolicy {
     }
 
     private Message convertMessage(Message message) {
-        String handledMessage = jsonSensitiveFieldsMasker.handleMessage(message.getFormattedMessage());
-        return new FormattedMessage(handledMessage, message.getParameters(), message.getThrowable());
+        return masker.handleMessage(message);
     }
 
 }

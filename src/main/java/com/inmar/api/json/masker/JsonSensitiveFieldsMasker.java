@@ -1,11 +1,13 @@
 package com.inmar.api.json.masker;
 
 import com.inmar.api.json.domain.JsonSupportedTypePatternMask;
+import org.apache.logging.log4j.message.FormattedMessage;
+import org.apache.logging.log4j.message.Message;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class JsonSensitiveFieldsMasker {
+public class JsonSensitiveFieldsMasker implements Masker {
 
     private final JsonSupportedTypePatternMask jsonSupportedTypePatternMask;
 
@@ -13,12 +15,13 @@ public class JsonSensitiveFieldsMasker {
         this.jsonSupportedTypePatternMask = jsonSupportedTypePatternMask;
     }
 
-    public String handleMessage(String message) {
-        String result = message;
+    @Override
+    public Message handleMessage(Message message) {
+        String result = message.getFormattedMessage();
         for (Pair<Pattern, String> pair : jsonSupportedTypePatternMask.values()) {
             result = handleMessage(result, pair);
         }
-        return result;
+        return new FormattedMessage(result, message.getParameters(), message.getThrowable());
     }
 
     private String handleMessage(String message, Pair<Pattern, String> pair) {
