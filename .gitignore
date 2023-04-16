@@ -50,4 +50,5 @@ velocity.log
 vcs.xml
 
 src/main/java/Main.java
-src/main/resources
+src/main/resources/log4j2.xml
+src/main/resources/qwe.json
