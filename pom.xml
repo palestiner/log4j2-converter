@@ -65,6 +65,12 @@
             <artifactId>disruptor</artifactId>
             <version>${lmax.disruptor.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+            <version>2.8.0</version>
+        </dependency>
+
     </dependencies>
 
     <distributionManagement>
