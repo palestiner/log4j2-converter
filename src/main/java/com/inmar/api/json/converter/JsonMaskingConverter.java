@@ -1,30 +1,19 @@
 package com.inmar.api.json.converter;
 
-import com.inmar.api.json.domain.JsonField;
-import com.inmar.api.json.domain.JsonSupportedType;
-import com.inmar.api.json.domain.JsonSupportedTypePatternMask;
-import com.inmar.api.json.masker.JsonSensitiveFieldsMasker;
+import com.inmar.api.json.domain.PluginJsonPath;
+import com.inmar.api.json.masker.JsonMasker;
 import com.inmar.api.json.masker.Masker;
 import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.appender.rewrite.RewritePolicy;
 import org.apache.logging.log4j.core.config.plugins.Plugin;
 import org.apache.logging.log4j.core.config.plugins.PluginElement;
 import org.apache.logging.log4j.core.config.plugins.PluginFactory;
-import org.apache.logging.log4j.core.config.plugins.validation.constraints.Required;
 import org.apache.logging.log4j.core.impl.Log4jLogEvent;
-import org.apache.logging.log4j.message.FormattedMessage;
 import org.apache.logging.log4j.message.Message;
-import org.apache.logging.log4j.status.StatusLogger;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Plugin(name = "JsonMaskingConverter", category = "Core", elementType = "rewritePolicy", printObject = true)
 public class JsonMaskingConverter implements RewritePolicy {
 
-    private static final StatusLogger LOGGER = StatusLogger.getLogger();
     private final Masker masker;
 
     public JsonMaskingConverter(Masker masker) {
@@ -32,24 +21,8 @@ public class JsonMaskingConverter implements RewritePolicy {
     }
 
     @PluginFactory
-    public static JsonMaskingConverter createPolicy(
-            @PluginElement("JsonFields")
-            @Required(message = "Required at least one JsonField")
-            final JsonField[] jsonFields
-    ) {
-        List<JsonField> filteredFields = Stream.of(jsonFields)
-                .filter(jsonField -> {
-                    boolean contains = JsonSupportedType.ALL_VALUES.contains(jsonField.type());
-                    if (!contains) LOGGER.info("{} field type don't supported", jsonField.type());
-                    return contains;
-                })
-                .collect(Collectors.toList());
-        return new JsonMaskingConverter(
-                new JsonSensitiveFieldsMasker(
-                        new JsonSupportedTypePatternMask(
-                                new HashMap<>(),
-                                filteredFields
-                        )));
+    public static JsonMaskingConverter createPolicy(@PluginElement("JsonPaths") final PluginJsonPath[] jsonPaths) {
+        return new JsonMaskingConverter(new JsonMasker(jsonPaths));
     }
 
     @Override
